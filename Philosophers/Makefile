@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 TEST_CFLAGS = -g
 
 NAME = philo
-SRCS = main.c ph_atoi.c
+SRCS = main.c ph_atoi.c messages.c
 SRCS_BONUS =
 HEAD = philo.h
 OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o)
