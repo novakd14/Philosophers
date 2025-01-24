@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 16:25:59 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/19 13:57:29 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/23 10:40:05 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,38 @@
 static int	ph_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
-		return (c);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 // The ph_atoi() function converts the full string pointed to by nptr
-// to non-negative int. The string has to begin with digit or '+' sign.
+// to non-negative int. The string has to contain only digits.
 // RETURN VALUE: The converted value or -1 on error.
 // NOTES: If ntpr == NULL return Segmentation fault
 int	ph_atoi(const char *nptr)
 {
 	size_t	i;
 	int		num;
+	int		next_digit;
 
 	i = 0;
-	if (*nptr == '+')
-		i = 1;
 	num = 0;
 	while (*(nptr + i) != '\0')
 	{
-		if (ph_isdigit(*(nptr + i)) == 0)
+		if (ph_isdigit(*(nptr + i)) == FALSE)
+		{
+			error_message("Arguments have to contain only digits.");
 			return (-1);
-		num = num * 10 + *(nptr + i++) - '0';
+		}
+		next_digit = *(nptr + i++) - '0';
+		if (num > MAX_INT / 10 || num * 10 > MAX_INT - next_digit)
+		{
+			error_message("Integer overflow.");
+			return (-1);
+		}
+		num = num * 10 + next_digit;
 	}
+	if (num == 0)
+		error_message("Arguments have to be positive integers.");
 	return (num);
 }

@@ -1,0 +1,14 @@
+==391911== Memcheck, a memory error detector
+==391911== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==391911== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==391911== Command: ./philo 1 2 3 4 5
+==391911== Parent PID: 391831
+==391911== 
+==391911== 
+==391911== HEAP SUMMARY:
+==391911==     in use at exit: 0 bytes in 0 blocks
+==391911==   total heap usage: 3 allocs, 3 frees, 4,384 bytes allocated
+==391911== 
+==391911== All heap blocks were freed -- no leaks are possible
+==391911== 
+==391911== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

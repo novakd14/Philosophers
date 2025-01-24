@@ -3,10 +3,10 @@ CFLAGS = -Wall -Wextra -Werror
 TEST_CFLAGS = -g
 
 NAME = philo
-SRCS = main.c ph_atoi.c messages.c
+SRCS = main.c ph_atoi.c simulation.c messages.c
 SRCS_BONUS =
 HEAD = philo.h
-OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o)
+OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o) $(SRCS_DEBUG)
 
 .PHONY: all clean fclean re test norm memleak
 
@@ -24,10 +24,12 @@ fclean: clean
 re: fclean all
 
 run: $(NAME) clean
-	-./$< 1 2 3 4
+	-./$< 4 300 300 300
 
 norm:
 	norminette
 
+ARG1 = 4 600 300 200
+
 memleak: $(NAME)
-	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$< $(ARG1) $(ARG2) $(ARG3)
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$< $(ARG1)
