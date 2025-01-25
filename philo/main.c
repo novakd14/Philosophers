@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:10:52 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/23 21:01:33 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/25 07:16:50 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static t_status	check_properties(int argc, char **argv, t_prop *prop)
 {
-	prop->philo_num = ph_atoi(argv[1]);
-	if (prop->philo_num < 1)
+	prop->philo_count = ph_atoi(argv[1]);
+	if (prop->philo_count < 1)
 		return (FAILURE);
 	prop->die_time = ph_atoi(argv[2]);
 	if (prop->die_time < 1)
@@ -52,7 +52,7 @@ static t_status	check_input(int argc, char **argv, t_prop *prop)
 static void	print_properties(t_prop *prop)
 {
 	printf("--------------------------\n");
-	printf("Number of philosophers: %i\n", prop->philo_num);
+	printf("Number of philosophers: %i\n", prop->philo_count);
 	printf("Time to die: %i\n", prop->die_time);
 	printf("Time to eat: %i\n", prop->eat_time);
 	printf("Time to sleep: %i\n", prop->sleep_time);
@@ -63,11 +63,13 @@ static void	print_properties(t_prop *prop)
 int	main(int argc, char **argv)
 {
 	t_prop	prop;
+	t_table	table;
 
 	if (check_input(argc, argv, &prop) == FAILURE)
 		return (FAILURE);
 	print_properties(&prop);
-	if (start_simulation(&prop) == FAILURE)
+	if (prepare_simulation(&prop, &table) == FAILURE)
 		return (FAILURE);
+	start_simulation(&prop, &table);
 	return (SUCCESS);
 }
