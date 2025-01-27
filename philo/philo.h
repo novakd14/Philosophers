@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/25 07:16:42 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/27 02:30:12 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@
 #  define MAX_INT 2147483647
 # endif
 
+# ifndef SIM_STEP
+#  define SIM_STEP 100
+# endif
+
 typedef enum e_status
 {
 	SUCCESS = 0,
@@ -40,12 +44,25 @@ typedef enum e_bool
 	TRUE = 1,
 }					t_bool;
 
-typedef enum e_sim_status
+typedef enum e_sim_state
 {
 	PREP,
 	RUN,
 	END,
-}					t_sim_status;
+}					t_sim_state;
+
+typedef enum e_philo_state
+{
+	THINKING,
+	EATING,
+	SLEEPING,
+}					t_philo_state;
+
+typedef enum e_fork_state
+{
+	FREE,
+	TAKEN,
+}					t_fork_state;
 
 typedef struct s_prop
 {
@@ -55,31 +72,50 @@ typedef struct s_prop
 	int				sleep_time;
 	int				must_eat;
 	struct timeval	sim_start;
-	t_sim_status	sim_status;
+	t_sim_state		sim_state;
 }					t_prop;
+
+typedef struct s_fork
+{
+	pthread_mutex_t	mutex;
+	t_fork_state	state;
+}					t_fork;
 
 typedef struct s_table
 {
-	pthread_mutex_t	*forks;
+	t_fork			*forks;
 	pthread_t		*philo;
 }					t_table;
 
 typedef struct s_data
 {
 	int				philo_id;
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
 	t_prop			*prop;
 }					t_data;
 
+typedef struct s_times
+{
+	long			last_action;
+	long			last_eating;
+}					t_times;
+
 t_status			prepare_simulation(t_prop *prop, t_table *table);
 void				start_simulation(t_prop *prop, t_table *table);
+void				*philosopher(void *data);
+void				take_action(t_philo_state *philo_state,
+						t_times *actions_times, t_data *data, int philo_num);
 
 // Messages
 void				error_message(char *message);
 void				print_corr_format(void);
 
-// Utils
+// Utils and cleaning functions
 int					ph_atoi(const char *nptr);
+long				curr_time_ms(t_prop *prop);
+void				free_forks(t_fork *forks, int count);
+void				clean_philosophers(pthread_t *philo, int count,
+						t_prop *prop, t_bool __end_sim);
 
 #endif // PHILO_H

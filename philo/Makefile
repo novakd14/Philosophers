@@ -3,7 +3,9 @@ CFLAGS = -Wall -Wextra -Werror
 TEST_CFLAGS = -g
 
 NAME = philo
-SRCS = main.c ph_atoi.c simulation.c messages.c
+SRCS =	main.c philosopher.c philosopher_actions.c \
+	simulation_prep.c simulation.c clean.c \
+	messages.c ph_atoi.c utils.c
 SRCS_BONUS =
 HEAD = philo.h
 OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o) $(SRCS_DEBUG)
@@ -31,5 +33,8 @@ norm:
 
 ARG1 = 4 600 300 200
 
-memleak: $(NAME)
-	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$< $(ARG1)
+test: $(OBJS) $(HEAD)
+	$(CC) $(TEST_CFLAGS) -o $(NAME) $(OBJS)
+
+memleak: test
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME) $(ARG1)

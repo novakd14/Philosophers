@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulation.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 18:42:07 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:31:25 by dnovak           ###   ########.fr       */
+/*   Created: 2025/01/27 02:01:49 by dnovak            #+#    #+#             */
+/*   Updated: 2025/01/27 02:02:17 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	start_simulation(t_prop *prop, t_table *table)
+long	curr_time_ms(t_prop *prop)
 {
-	gettimeofday(&(prop->sim_start), NULL);
-	prop->sim_state = RUN;
-	clean_philosophers(table->philo, prop->philo_count, prop, FALSE);
-	free_forks(table->forks, prop->philo_count);
+	struct timeval	tv;
+	long			curr_time;
+
+	gettimeofday(&tv, NULL);
+	curr_time = (tv.tv_sec - prop->sim_start.tv_sec) * 1000;
+	curr_time += (tv.tv_usec - prop->sim_start.tv_usec) / 1000;
+	return (curr_time);
 }
