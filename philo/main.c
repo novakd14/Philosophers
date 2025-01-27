@@ -6,11 +6,17 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:10:52 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/25 07:16:50 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/26 23:18:03 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	init_variables(t_prop *prop, t_table *table)
+{
+	memset(prop, 0, sizeof(t_prop));
+	memset(table, 0, sizeof(t_table));
+}
 
 static t_status	check_properties(int argc, char **argv, t_prop *prop)
 {
@@ -65,6 +71,7 @@ int	main(int argc, char **argv)
 	t_prop	prop;
 	t_table	table;
 
+	init_variables(&prop, &table);
 	if (check_input(argc, argv, &prop) == FAILURE)
 		return (FAILURE);
 	print_properties(&prop);
