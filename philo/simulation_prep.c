@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:54:06 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:30:49 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:21:12 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,17 @@ static t_status	prepare_philosophers(t_prop *prop, t_table *table)
 t_status	prepare_simulation(t_prop *prop, t_table *table)
 {
 	prop->sim_state = PREP;
-	if (prepare_forks(prop, table) == FAILURE)
+	if (pthread_mutex_init(&(prop->log_mutex), NULL) != 0)
 		return (FAILURE);
+	if (prepare_forks(prop, table) == FAILURE)
+	{
+		pthread_mutex_destroy(&(prop->log_mutex));
+		return (FAILURE);
+	}
 	if (prepare_philosophers(prop, table) == FAILURE)
 	{
 		free_forks(table->forks, prop->philo_count);
+		pthread_mutex_destroy(&(prop->log_mutex));
 		return (FAILURE);
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 01:59:44 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:33:48 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:49:23 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	start_sleeping(t_philo_state *philo_state, t_times *actions_times,
 		t_data *data, int philo_num)
 {
+	actions_times->last_action += data->prop->eat_time;
 	pthread_mutex_lock(&(data->first_fork->mutex));
 	data->first_fork->state = FREE;
 	pthread_mutex_unlock(&(data->first_fork->mutex));
@@ -22,16 +23,15 @@ static void	start_sleeping(t_philo_state *philo_state, t_times *actions_times,
 	data->second_fork->state = FREE;
 	pthread_mutex_unlock(&(data->second_fork->mutex));
 	*philo_state = SLEEPING;
-	actions_times->last_action = curr_time_ms(data->prop);
-	printf("%li ms %i is sleeping\n", actions_times->last_action, philo_num);
+	print_log(data->prop, philo_num, SLEEP);
 }
 
 static void	start_thinking(t_philo_state *philo_state, t_times *actions_times,
 		t_data *data, int philo_num)
 {
+	actions_times->last_action += data->prop->sleep_time;
 	*philo_state = THINKING;
-	actions_times->last_action = curr_time_ms(data->prop);
-	printf("%li ms %i is thinking\n", actions_times->last_action, philo_num);
+	print_log(data->prop, philo_num, THINK);
 }
 
 static void	start_eating(t_philo_state *philo_state, t_times *actions_times,
@@ -45,19 +45,18 @@ static void	start_eating(t_philo_state *philo_state, t_times *actions_times,
 		pthread_mutex_lock(&(data->second_fork->mutex));
 		if (data->second_fork->state == FREE)
 		{
+			actions_times->last_action = ph_max3(data->first_fork->time_freed,
+					data->second_fork->time_freed, actions_times->last_action);
+			data->first_fork->time_freed = actions_times->last_action
+				+ data->prop->eat_time;
 			data->first_fork->state = TAKEN;
-			actions_times->last_action = curr_time_ms(data->prop);
-			printf("%li ms %i has taken a fork\n", actions_times->last_action,
-				philo_num);
+			print_log(data->prop, philo_num, FORK);
+			data->second_fork->time_freed = data->first_fork->time_freed;
 			data->second_fork->state = TAKEN;
-			actions_times->last_action = curr_time_ms(data->prop);
-			printf("%li ms %i has taken a fork\n", actions_times->last_action,
-				philo_num);
-			*philo_state = EATING;
-			actions_times->last_action = curr_time_ms(data->prop);
+			print_log(data->prop, philo_num, FORK);
 			actions_times->last_eating = actions_times->last_action;
-			printf("%li ms %i is eating\n", actions_times->last_action,
-				philo_num);
+			*philo_state = EATING;
+			print_log(data->prop, philo_num, EAT);
 		}
 		pthread_mutex_unlock(&(data->second_fork->mutex));
 	}
@@ -68,11 +67,11 @@ void	take_action(t_philo_state *philo_state, t_times *actions_times,
 		t_data *data, int philo_num)
 {
 	if (curr_time_ms(data->prop)
-		- actions_times->last_eating >= data->prop->die_time + 1)
+		- actions_times->last_eating > data->prop->die_time)
 	{
 		data->prop->sim_state = END;
 		actions_times->last_action = curr_time_ms(data->prop);
-		printf("%li ms %i died\n", actions_times->last_action, philo_num);
+		print_log(data->prop, philo_num, DIE);
 	}
 	else if (*philo_state == EATING && curr_time_ms(data->prop)
 		- actions_times->last_action >= data->prop->eat_time)
