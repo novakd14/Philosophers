@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:10:52 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/26 23:18:03 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:16:40 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static void	print_properties(t_prop *prop)
 	printf("Time to die: %i\n", prop->die_time);
 	printf("Time to eat: %i\n", prop->eat_time);
 	printf("Time to sleep: %i\n", prop->sleep_time);
-	printf("Number of times each philo must eat: %i\n", prop->must_eat);
+	if (prop->must_eat > 0)
+		printf("Number of times each philo must eat: %i\n", prop->must_eat);
 	printf("--------------------------\n");
 }
 

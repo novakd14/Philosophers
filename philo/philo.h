@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:30:12 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:50:00 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,15 @@ typedef enum e_fork_state
 	TAKEN,
 }					t_fork_state;
 
+typedef enum e_action
+{
+	FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIE,
+}					t_action;
+
 typedef struct s_prop
 {
 	int				philo_count;
@@ -73,12 +82,14 @@ typedef struct s_prop
 	int				must_eat;
 	struct timeval	sim_start;
 	t_sim_state		sim_state;
+	pthread_mutex_t	log_mutex;
 }					t_prop;
 
 typedef struct s_fork
 {
 	pthread_mutex_t	mutex;
 	t_fork_state	state;
+	long			time_freed;
 }					t_fork;
 
 typedef struct s_table
@@ -97,6 +108,7 @@ typedef struct s_data
 
 typedef struct s_times
 {
+	long			curr_time;
 	long			last_action;
 	long			last_eating;
 }					t_times;
@@ -110,9 +122,11 @@ void				take_action(t_philo_state *philo_state,
 // Messages
 void				error_message(char *message);
 void				print_corr_format(void);
+void				print_log(t_prop *prop, int philo_num, t_action action);
 
 // Utils and cleaning functions
 int					ph_atoi(const char *nptr);
+long				ph_max3(long a, long b, long c);
 long				curr_time_ms(t_prop *prop);
 void				free_forks(t_fork *forks, int count);
 void				clean_philosophers(pthread_t *philo, int count,

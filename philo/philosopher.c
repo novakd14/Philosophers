@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 21:45:25 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:00:38 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:13:59 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ void	*philosopher(void *data)
 
 	philo_num = ((t_data *)data)->philo_id + 1;
 	prop = ((t_data *)data)->prop;
-	philo_state = THINKING;
+	memset(&actions_times, 0, sizeof(t_times));
 	while (prop->sim_state == PREP)
 		usleep(SIM_STEP);
-	actions_times.last_action = curr_time_ms(prop);
-	actions_times.last_eating = actions_times.last_action;
-	printf("%li ms %i is thinking\n", actions_times.last_action, philo_num);
+	philo_state = THINKING;
+	print_log(prop, philo_num, THINK);
 	while (prop->sim_state == RUN)
 	{
 		take_action(&philo_state, &actions_times, data, philo_num);
