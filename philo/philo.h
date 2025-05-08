@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/29 10:50:00 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/04/11 00:35:21 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_prop
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
-	int				must_eat;
+	int				meals_num;
 	struct timeval	sim_start;
 	t_sim_state		sim_state;
 	pthread_mutex_t	log_mutex;

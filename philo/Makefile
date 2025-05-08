@@ -3,9 +3,14 @@ CFLAGS = -Wall -Wextra -Werror
 TEST_CFLAGS = -g
 
 NAME = philo
-SRCS =	main.c philosopher.c philosopher_actions.c \
-	simulation_prep.c simulation.c clean.c \
-	messages.c ph_atoi.c utils.c
+SRCS =	main.c \
+		philosopher.c \
+		philosopher_actions.c \
+		simulation_prep.c \
+		simulation.c clean.c \
+		messages.c \
+		ph_atoi.c \
+		utils.c
 SRCS_BONUS =
 HEAD = philo.h
 OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o) $(SRCS_DEBUG)
@@ -15,7 +20,7 @@ OBJS = $(SRCS:.c=.o) $(SRCS_BONUS:.c=.o) $(SRCS_DEBUG)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(HEAD)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $(OBJS)
 
 clean:
 	rm -f $(OBJS)
