@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 16:25:59 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/23 10:40:05 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/10 19:50:35 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static int	ph_isdigit(int c)
 }
 
 // The ph_atoi() function converts the full string pointed to by nptr
-// to non-negative int. The string has to contain only digits.
+// to positive int. The string has to contain only digits.
 // RETURN VALUE: The converted value or -1 on error.
 // NOTES: If ntpr == NULL return Segmentation fault
-int	ph_atoi(const char *nptr)
+int	ph_atoi(const char *nptr, t_bool positive)
 {
 	size_t	i;
 	int		num;
@@ -46,7 +46,7 @@ int	ph_atoi(const char *nptr)
 		}
 		num = num * 10 + next_digit;
 	}
-	if (num == 0)
+	if (num == 0 && positive == TRUE)
 		error_message("Arguments have to be positive integers.");
 	return (num);
 }

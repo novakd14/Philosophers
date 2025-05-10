@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:10:52 by dnovak            #+#    #+#             */
-/*   Updated: 2025/04/11 00:36:15 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/10 19:51:54 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ static void	init_variables(t_prop *prop, t_table *table)
 
 static t_status	check_properties(int argc, char **argv, t_prop *prop)
 {
-	prop->philo_count = ph_atoi(argv[1]);
+	prop->philo_count = ph_atoi(argv[1], TRUE);
 	if (prop->philo_count < 1)
 		return (FAILURE);
-	prop->die_time = ph_atoi(argv[2]);
+	prop->die_time = ph_atoi(argv[2], TRUE);
 	if (prop->die_time < 1)
 		return (FAILURE);
-	prop->eat_time = ph_atoi(argv[3]);
+	prop->eat_time = ph_atoi(argv[3], TRUE);
 	if (prop->eat_time < 1)
 		return (FAILURE);
-	prop->sleep_time = ph_atoi(argv[4]);
+	prop->sleep_time = ph_atoi(argv[4], TRUE);
 	if (prop->sleep_time < 1)
 		return (FAILURE);
 	prop->meals_num = -1;
 	if (argc == 6)
 	{
-		prop->meals_num = ph_atoi(argv[5]);
+		prop->meals_num = ph_atoi(argv[5], TRUE);
 		if (prop->meals_num < 1)
 			return (FAILURE);
 	}

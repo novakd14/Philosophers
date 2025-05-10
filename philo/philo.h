@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/04/11 00:35:21 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/10 19:53:21 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void				print_corr_format(void);
 void				print_log(t_prop *prop, int philo_num, t_action action);
 
 // Utils and cleaning functions
-int					ph_atoi(const char *nptr);
+int					ph_atoi(const char *nptr, t_bool positive);
 long				ph_max3(long a, long b, long c);
 long				curr_time_ms(t_prop *prop);
 void				free_forks(t_fork *forks, int count);
