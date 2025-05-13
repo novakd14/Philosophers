@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/05/10 19:53:21 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/13 13:53:37 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@
 #  define MAX_INT 2147483647
 # endif
 
-# ifndef SIM_STEP
-#  define SIM_STEP 100
+# ifndef MIN_SIM_STEP
+#  define MIN_SIM_STEP 10
+# endif
+
+# ifndef MAX_SIM_STEP
+#  define MAX_SIM_STEP 1000
 # endif
 
 typedef enum e_status
@@ -80,6 +84,7 @@ typedef struct s_prop
 	int				eat_time;
 	int				sleep_time;
 	int				meals_num;
+	int				full_philo;
 	struct timeval	sim_start;
 	t_sim_state		sim_state;
 	pthread_mutex_t	log_mutex;
@@ -100,9 +105,11 @@ typedef struct s_table
 
 typedef struct s_data
 {
-	int				philo_id;
+	int				philo_num;
+	int				meals_eaten;
 	t_fork			*first_fork;
 	t_fork			*second_fork;
+	t_bool			taken_first_fork;
 	t_prop			*prop;
 }					t_data;
 
@@ -117,7 +124,11 @@ t_status			prepare_simulation(t_prop *prop, t_table *table);
 void				start_simulation(t_prop *prop, t_table *table);
 void				*philosopher(void *data);
 void				take_action(t_philo_state *philo_state,
-						t_times *actions_times, t_data *data, int philo_num);
+						t_times *actions_times, t_data *data);
+
+// Actions utils
+void				take_first_fork(t_data *data);
+void				update_eaten_meals(t_data *data);
 
 // Messages
 void				error_message(char *message);
@@ -127,9 +138,10 @@ void				print_log(t_prop *prop, int philo_num, t_action action);
 // Utils and cleaning functions
 int					ph_atoi(const char *nptr, t_bool positive);
 long				ph_max3(long a, long b, long c);
+long				ph_min(long a, long b);
 long				curr_time_ms(t_prop *prop);
 void				free_forks(t_fork *forks, int count);
 void				clean_philosophers(pthread_t *philo, int count,
-						t_prop *prop, t_bool __end_sim);
+						t_prop *prop, t_bool end_sim);
 
 #endif // PHILO_H

@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 23:50:58 by dnovak            #+#    #+#             */
-/*   Updated: 2025/05/08 13:28:33 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/12 15:44:55 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	print_corr_format(void)
 		185);
 }
 
-static	void set_color(t_action action)
+static void	set_color(t_action action)
 {
 	if (action == FORK)
 		printf("\033[0;34m");
@@ -62,18 +62,24 @@ static	void set_color(t_action action)
 void	print_log(t_prop *prop, int philo_num, t_action action)
 {
 	pthread_mutex_lock(&(prop->log_mutex));
-	set_color(action);
-	printf("%li ms [%i] ", curr_time_ms(prop), philo_num);
-	if (action == FORK)
-		printf("has taken a fork\n");
-	else if (action == EAT)
-		printf("is eating\n");
-	else if (action == SLEEP)
-		printf("is sleeping\n");
-	else if (action == THINK)
-		printf("is thinking\n");
-	else if (action == DIE)
-		printf("died\n");
-	printf("\033[0m");
+	if (prop->sim_state == RUN)
+	{
+		set_color(action);
+		printf("%li ms [%i] ", curr_time_ms(prop), philo_num);
+		if (action == FORK)
+			printf("has taken a fork\n");
+		else if (action == EAT)
+			printf("is eating\n");
+		else if (action == SLEEP)
+			printf("is sleeping\n");
+		else if (action == THINK)
+			printf("is thinking\n");
+		else if (action == DIE)
+		{
+			printf("died\n");
+			prop->sim_state = END;
+		}
+		printf("\033[0m");
+	}
 	pthread_mutex_unlock(&(prop->log_mutex));
 }

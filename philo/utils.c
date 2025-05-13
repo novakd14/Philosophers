@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 02:01:49 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/29 09:29:57 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/13 13:56:21 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ long	ph_max3(long a, long b, long c)
 	else if (b > c)
 		return (b);
 	return (c);
+}
+
+long	ph_min(long a, long b)
+{
+	if (a < b)
+		return (a);
+	return (b);
 }
 
 long	curr_time_ms(t_prop *prop)

@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:54:06 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/29 10:21:12 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/13 13:26:09 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_status	prepare_forks(t_prop *prop, t_table *table)
 {
 	int	id;
 
-	table->forks = (t_fork *)malloc(sizeof(t_fork) * prop->philo_count);
+	table->forks = (t_fork *)calloc(prop->philo_count, sizeof(t_fork));
 	if (table->forks == NULL)
 	{
 		error_message("Could not allocate memory.");
@@ -39,7 +39,7 @@ static t_status	prepare_forks(t_prop *prop, t_table *table)
 
 static void	init_data(t_data *data, int id, t_prop *prop, t_fork *forks)
 {
-	data->philo_id = id;
+	data->philo_num = id + 1;
 	data->prop = prop;
 	if (prop->philo_count == 1)
 	{
@@ -65,7 +65,7 @@ static t_status	prepare_philo(t_prop *prop, t_table *table, int id)
 {
 	t_data	*data;
 
-	data = (t_data *)malloc(sizeof(t_data));
+	data = (t_data *)calloc(1, sizeof(t_data));
 	if (data == NULL)
 	{
 		error_message("Could not allocate memory.");
@@ -85,9 +85,12 @@ static t_status	prepare_philosophers(t_prop *prop, t_table *table)
 {
 	int	id;
 
-	table->philo = (pthread_t *)malloc(sizeof(pthread_t) * prop->philo_count);
+	table->philo = (pthread_t *)calloc(prop->philo_count, sizeof(pthread_t));
 	if (table->philo == NULL)
+	{
+		error_message("Could not allocate memory.");
 		return (FAILURE);
+	}
 	id = 0;
 	while (id < prop->philo_count)
 	{
@@ -105,15 +108,20 @@ t_status	prepare_simulation(t_prop *prop, t_table *table)
 {
 	prop->sim_state = PREP;
 	if (pthread_mutex_init(&(prop->log_mutex), NULL) != 0)
+	{
+		error_message("Could not initialize a mutex object.");
 		return (FAILURE);
+	}
 	if (prepare_forks(prop, table) == FAILURE)
 	{
 		pthread_mutex_destroy(&(prop->log_mutex));
 		return (FAILURE);
 	}
+	pthread_mutex_lock(&(prop->log_mutex));
 	if (prepare_philosophers(prop, table) == FAILURE)
 	{
 		free_forks(table->forks, prop->philo_count);
+		pthread_mutex_unlock(&(prop->log_mutex));
 		pthread_mutex_destroy(&(prop->log_mutex));
 		return (FAILURE);
 	}

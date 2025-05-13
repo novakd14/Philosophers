@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 18:38:28 by dnovak            #+#    #+#             */
-/*   Updated: 2025/01/27 02:29:52 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/10 20:21:05 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	free_forks(t_fork *forks, int count)
 }
 
 void	clean_philosophers(pthread_t *philo, int count, t_prop *prop,
-		t_bool __end_sim)
+		t_bool end_sim)
 {
 	int	i;
 
-	if (__end_sim == TRUE)
+	if (end_sim == TRUE)
 		prop->sim_state = END;
 	i = 0;
 	while (i < count)
