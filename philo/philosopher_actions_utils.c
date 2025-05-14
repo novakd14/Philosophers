@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 01:59:44 by dnovak            #+#    #+#             */
-/*   Updated: 2025/05/13 13:30:32 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/14 15:18:19 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	take_first_fork(t_data *data)
 {
 	if (data->taken_first_fork == FALSE)
 	{
-		data->first_fork->state = TAKEN;
 		print_log(data->prop, data->philo_num, FORK);
+		data->first_fork->state = TAKEN;
 		data->taken_first_fork = TRUE;
 	}
 }

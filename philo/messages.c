@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 23:50:58 by dnovak            #+#    #+#             */
-/*   Updated: 2025/05/12 15:44:55 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/14 14:01:07 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	print_log(t_prop *prop, int philo_num, t_action action)
 	if (prop->sim_state == RUN)
 	{
 		set_color(action);
-		printf("%li ms [%i] ", curr_time_ms(prop), philo_num);
+		printf("%li %i ", curr_time_ms(prop), philo_num);
 		if (action == FORK)
 			printf("has taken a fork\n");
 		else if (action == EAT)

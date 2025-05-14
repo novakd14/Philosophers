@@ -6,7 +6,7 @@
 /*   By: dnovak <dnovak@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 09:17:56 by dnovak            #+#    #+#             */
-/*   Updated: 2025/05/13 13:53:37 by dnovak           ###   ########.fr       */
+/*   Updated: 2025/05/14 20:21:06 by dnovak           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,8 @@
 #  define MAX_INT 2147483647
 # endif
 
-# ifndef MIN_SIM_STEP
-#  define MIN_SIM_STEP 10
-# endif
-
-# ifndef MAX_SIM_STEP
-#  define MAX_SIM_STEP 1000
+# ifndef SIM_STEP
+#  define SIM_STEP 100
 # endif
 
 typedef enum e_status
@@ -115,7 +111,6 @@ typedef struct s_data
 
 typedef struct s_times
 {
-	long			curr_time;
 	long			last_action;
 	long			last_eating;
 }					t_times;

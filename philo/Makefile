@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-TEST_CFLAGS = -g
+TEST_CFLAGS = -g3
 
 NAME = philo
 SRCS =	main.c \
@@ -27,7 +27,7 @@ ARG02 = 5 800 200 200
 ARG03 = 5 800 200 200 7
 ARG04 = 4 410 200 200
 ARG05 = 4 310 200 100
-ARG06 = 5 800 200 200
+ARG06 = 5 800 200 200 3
 
 .PHONY: all clean fclean re test norm memleak
 
