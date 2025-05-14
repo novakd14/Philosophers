@@ -48,7 +48,7 @@ void	*philosopher(void *data)
 	pthread_mutex_unlock(&(prop->log_mutex));
 	print_log(prop, ((t_data *)data)->philo_num, THINK);
 	if (((t_data *)data)->philo_num % 2 == 0)
-		usleep(ph_min(prop->die_time, prop->eat_time)/4*1000);
+		usleep(ph_min(prop->die_time, prop->eat_time) / 4 * 1000);
 	while (check_sim_state(prop) == RUN)
 	{
 		take_action(&philo_state, &actions_times, data);
